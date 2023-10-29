@@ -17,3 +17,19 @@ header a {
   font-weight: bold;
   text-decoration: none;
 }
+
+main {
+  padding: 1rem;
+}
+.product,
+tr {
+  border: 1px solid;
+  height: 2rem;
+}
+
+.product-table {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  width: 80%;
+}
