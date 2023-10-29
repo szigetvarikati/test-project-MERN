@@ -1,39 +1,24 @@
-import data from './data';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import ProductTable from './screens/ProductTable';
+import LoginScreen from './screens/LoginScreen';
 
 function App() {
   return (
-    <div>
-      <header>
-        <a href="/">
-          Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
-        </a>
-      </header>
-      <main>
-        <h1>Termékeink</h1>
-        <div>
-          <table className="product-table">
-            <thead>
-              <tr>
-                <th>Cikkszám</th>
-                <th>Cikk megnevezése</th>
-                <th>Nettó ár</th>
-                <th>Áfa</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.products.map((product) => (
-                <tr className="product" key={product._id}>
-                  <td>{product.number}</td>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.vat}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </main>
-    </div>
+    <BrowserRouter>
+      <div>
+        <header>
+          <Link to="/">
+            Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
+          </Link>
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<LoginScreen />} />
+            <Route path="/products" element={<ProductTable />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
 
