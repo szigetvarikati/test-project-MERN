@@ -33,3 +33,24 @@ tr {
   border-collapse: collapse;
   width: 80%;
 }
+
+.login {
+  background-color: #c4c4c4;
+  width: 50%;
+  height: 15rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-form {
+  margin-left: 20%;
+  margin-right: 20%;
+  justify-content: center;
+  align-content: center;
+}
+
+button:hover {
+  opacity: 0.8;
+  background-color: rgb(242, 81, 81);
+  color: #ffffff;
+}
