@@ -56,8 +56,8 @@ function ProductTable() {
                 <tr className="product" key={product._id}>
                   <td>{product.number}</td>
                   <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.vat}</td>
+                  <td className="text-center">{product.price}</td>
+                  <td className="text-center">{product.vat}</td>
                 </tr>
               ))
             )}
