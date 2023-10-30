@@ -1,14 +1,19 @@
 body {
+  background-color: rgb(70, 71, 88);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .site-container {
   min-height: 100vh;
+}
+.table {
+  --bs-table-bg: rgb(106, 107, 124);
 }
 
 main {
@@ -18,13 +23,6 @@ main {
 tr {
   border: 1px solid;
   height: 2rem;
-}
-
-.product-table {
-  margin-left: auto;
-  margin-right: auto;
-  border-collapse: collapse;
-  width: 80%;
 }
 
 .login {

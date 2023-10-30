@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
+import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -35,15 +36,18 @@ function ProductTable() {
   }, []);
   return (
     <div>
+      <Helmet>
+        <title>Termékek</title>
+      </Helmet>
       <h1>Termékeink</h1>
       <div>
-        <table className="product-table">
+        <table className="table table-hover table-dark">
           <thead>
             <tr>
-              <th>Cikkszám</th>
-              <th>Cikk megnevezése</th>
-              <th>Nettó ár (Ft)</th>
-              <th>Áfa (%)</th>
+              <th scope="col">Cikkszám</th>
+              <th scope="col">Cikk megnevezése</th>
+              <th scope="col">Nettó ár (Ft)</th>
+              <th scope="col">Áfa (%)</th>
             </tr>
           </thead>
           <tbody>
@@ -54,7 +58,7 @@ function ProductTable() {
             ) : (
               products.map((product) => (
                 <tr className="product" key={product._id}>
-                  <td>{product.number}</td>
+                  <th scope="row">{product.number}</th>
                   <td>{product.name}</td>
                   <td className="text-center">{product.price}</td>
                   <td className="text-center">{product.vat}</td>
