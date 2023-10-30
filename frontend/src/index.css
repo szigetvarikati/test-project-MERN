@@ -1,19 +1,59 @@
 body {
+  background-color: rgb(70, 71, 88);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-header {
-  background-color: #404040;
-  padding: 1rem;
+.site-container {
+  min-height: 100vh;
+}
+.table {
+  --bs-table-bg: rgb(106, 107, 124);
 }
 
-header a {
-  color: #ffffff;
-  font-weight: bold;
-  text-decoration: none;
+main {
+  flex: 1;
+}
+.product,
+tr {
+  border: 1px solid;
+  height: 2rem;
+}
+
+.login {
+  background-color: #c4c4c4;
+  width: 50%;
+  height: 15rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-form {
+  margin-left: 20%;
+  margin-right: 20%;
+  justify-content: center;
+  align-content: center;
+}
+
+.my-custom-button {
+  background-color: black;
+  outline-color: #ffffff;
+  border-color: #c4c4c4;
+  padding: 10px;
+  width: 40%;
+  font-size: large;
+}
+
+.my-custom-button:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+.small-container {
+  max-width: 600px;
 }
