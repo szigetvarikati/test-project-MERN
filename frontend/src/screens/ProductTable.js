@@ -2,6 +2,7 @@ import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Helmet } from 'react-helmet-async';
+import LoadingBox from '../components/LoadingBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -52,7 +53,7 @@ function ProductTable() {
           </thead>
           <tbody>
             {loading ? (
-              <div>Loading...</div>
+              <LoadingBox />
             ) : error ? (
               <div>{error}</div>
             ) : (
