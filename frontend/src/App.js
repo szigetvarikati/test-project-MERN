@@ -23,6 +23,7 @@ function App() {
           <Container>
             <Routes>
               <Route path="/" element={<LoginScreen />} />
+              <Route path="/login" element={<LoginScreen />} />
               <Route path="/products" element={<ProductTable />} />
             </Routes>
           </Container>

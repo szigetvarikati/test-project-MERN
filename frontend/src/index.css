@@ -40,8 +40,20 @@ tr {
   align-content: center;
 }
 
-button:hover {
-  opacity: 0.8;
-  background-color: rgb(242, 81, 81);
-  color: #ffffff;
+.my-custom-button {
+  background-color: black;
+  outline-color: #ffffff;
+  border-color: #c4c4c4;
+  padding: 10px;
+  width: 40%;
+  font-size: large;
+}
+
+.my-custom-button:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+.small-container {
+  max-width: 600px;
 }
