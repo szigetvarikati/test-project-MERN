@@ -3,6 +3,7 @@ import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
+import ExportToPdf from '../components/ExportToPdf';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,6 +92,7 @@ function ProductTable() {
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const labels = ['Cikkszám', 'Cikk megnevezése', 'Nettó ár (Ft)', 'Áfa (%)'];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,6 +155,11 @@ function ProductTable() {
           {invalidSearchMessage && (
             <div className="error-message">{invalidSearchMessage}</div>
           )}
+          <ExportToPdf
+            labels={labels}
+            products={products}
+            searchResult={searchResult}
+          />
         </div>
         <table className="table table-hover">
           <thead>
