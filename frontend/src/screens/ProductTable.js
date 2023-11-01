@@ -3,38 +3,74 @@ import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
+import ExportToPdf from '../components/ExportToPdf';
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, products: action.payload, loading: false };
+      return {
+        ...state,
+        products: action.payload,
+        loading: false,
+        searchResult: action.payload,
+      };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     case 'SORT_NUMBERVALUES':
-      const sortedProductsByNumberValues = [...state.products].sort((a, b) => {
-        if (action.payload.direction === 'asc') {
-          return a[action.payload.field] - b[action.payload.field];
-        } else {
-          return b[action.payload.field] - a[action.payload.field];
+      const sortedProductsByNumberValues = [...state.searchResult].sort(
+        (a, b) => {
+          if (action.payload.direction === 'asc') {
+            return a[action.payload.field] - b[action.payload.field];
+          } else {
+            return b[action.payload.field] - a[action.payload.field];
+          }
         }
-      });
-      return { ...state, products: sortedProductsByNumberValues };
+      );
+      return {
+        ...state,
+        searchResult: sortedProductsByNumberValues,
+      };
     case 'SORT_STRINGVALUES':
       const { field, direction } = action.payload;
-      const sortedProducts = [...state.products].sort((a, b) => {
+      const sortedProducts = [...state.searchResult].sort((a, b) => {
         const aValue = a[field];
         const bValue = b[field];
         return direction === 'asc'
           ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
       });
-      return { ...state, products: sortedProducts };
+      return { ...state, searchResult: sortedProducts };
     case 'REVERSE_SORT':
       return {
         ...state,
-        products: [...state.products.reverse()],
+        searchResult: [...state.searchResult.reverse()],
+      };
+    case 'SEARCH':
+      const searchTerm = action.payload.toLowerCase();
+      const searchResult = state.products.filter((product) => {
+        return Object.values(product).some((value) => {
+          if (
+            typeof value === 'string' &&
+            value.toLowerCase().includes(searchTerm)
+          ) {
+            return true;
+          }
+          if (
+            typeof value === 'number' &&
+            value.toString().includes(searchTerm)
+          ) {
+            return true;
+          }
+          return false;
+        });
+      });
+
+      return {
+        ...state,
+        searchResult,
+        invalidSearchMessage: searchResult.length === 0 ? 'Nincs találat.' : '',
       };
     default:
       return state;
@@ -42,14 +78,21 @@ const reducer = (state, action) => {
 };
 
 function ProductTable() {
-  const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
+  const [
+    { loading, error, products, searchResult, invalidSearchMessage },
+    dispatch,
+  ] = useReducer(logger(reducer), {
     products: [],
     loading: true,
     error: '',
+    searchResult: [],
+    invalidSearchMessage: '',
   });
 
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const labels = ['Cikkszám', 'Cikk megnevezése', 'Nettó ár (Ft)', 'Áfa (%)'];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +128,16 @@ function ProductTable() {
 
     dispatch({ type: 'SORT_STRINGVALUES', payload: { field, direction } });
   };
+
+  const handleSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    if (e.target.value.length === 0) {
+      dispatch({ type: 'SEARCH', payload: e.target.value });
+    } else {
+      dispatch({ type: 'SEARCH', payload: e.target.value });
+    }
+  };
+
   return (
     <div>
       <Helmet>
@@ -92,7 +145,23 @@ function ProductTable() {
       </Helmet>
       <h1>Termékeink</h1>
       <div>
-        <table className="table table-hover table-dark">
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <input
+            type="text"
+            placeholder="Keresés..."
+            value={searchTerm}
+            onChange={handleSearchInputChange}
+          />
+          {invalidSearchMessage && (
+            <div className="error-message">{invalidSearchMessage}</div>
+          )}
+          <ExportToPdf
+            labels={labels}
+            products={products}
+            searchResult={searchResult}
+          />
+        </div>
+        <table className="table table-hover">
           <thead>
             <tr className="sortable-header">
               <th
@@ -131,14 +200,16 @@ function ProductTable() {
             ) : error ? (
               <div>{error}</div>
             ) : (
-              products.map((product) => (
-                <tr className="product" key={product._id}>
-                  <th scope="row">{product.number}</th>
-                  <td>{product.name}</td>
-                  <td className="text-center">{product.price}</td>
-                  <td className="text-center">{product.vat}</td>
-                </tr>
-              ))
+              (searchResult.length > 0 ? searchResult : products).map(
+                (product) => (
+                  <tr key={product._id}>
+                    <th scope="row">{product.number}</th>
+                    <td>{product.name}</td>
+                    <td>{product.price}</td>
+                    <td>{product.vat}</td>
+                  </tr>
+                )
+              )
             )}
           </tbody>
         </table>
