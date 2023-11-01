@@ -1,13 +1,29 @@
+import Axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import { Helmet } from 'react-helmet-async';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
 
 export default function LoginScreen() {
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await Axios.post('/api/users/login', {
+        username,
+        password,
+      });
+      console.log(data);
+    } catch (err) {}
+  };
   return (
     <Container className="py-5">
       <Container className="bg-dark text-white col-md-8 col-lg-6 text-center p-5">
@@ -16,13 +32,24 @@ export default function LoginScreen() {
         </Helmet>
         <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
         <p class="text-white-50 mb-4">Please enter your login and password!</p>
-        <Form className="row d-flex justify-content-center align-items-center">
+        <Form
+          onSubmit={submitHandler}
+          className="row d-flex justify-content-center align-items-center"
+        >
           <Form.Group className="mb-3" controlId="username">
-            <Form.Control type="username" required />
+            <Form.Control
+              type="username"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
             <Form.Label>Username</Form.Label>
           </Form.Group>
           <Form.Group className="mb-3" controlId="password">
-            <Form.Control type="password" required />
+            <Form.Control
+              type="password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <Form.Label>Password</Form.Label>
           </Form.Group>
           <Link
