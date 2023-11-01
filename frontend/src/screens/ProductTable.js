@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Helmet } from 'react-helmet-async';
@@ -12,6 +12,30 @@ const reducer = (state, action) => {
       return { ...state, products: action.payload, loading: false };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
+    case 'SORT_NUMBERVALUES':
+      const sortedProductsByNumberValues = [...state.products].sort((a, b) => {
+        if (action.payload.direction === 'asc') {
+          return a[action.payload.field] - b[action.payload.field];
+        } else {
+          return b[action.payload.field] - a[action.payload.field];
+        }
+      });
+      return { ...state, products: sortedProductsByNumberValues };
+    case 'SORT_STRINGVALUES':
+      const { field, direction } = action.payload;
+      const sortedProducts = [...state.products].sort((a, b) => {
+        const aValue = a[field];
+        const bValue = b[field];
+        return direction === 'asc'
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      });
+      return { ...state, products: sortedProducts };
+    case 'REVERSE_SORT':
+      return {
+        ...state,
+        products: [...state.products.reverse()],
+      };
     default:
       return state;
   }
@@ -23,6 +47,10 @@ function ProductTable() {
     loading: true,
     error: '',
   });
+
+  const [sortField, setSortField] = useState('');
+  const [sortDirection, setSortDirection] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -35,6 +63,28 @@ function ProductTable() {
     };
     fetchData();
   }, []);
+
+  const handleSortClickByNumberValues = (field) => {
+    let direction = 'asc';
+    if (sortDirection === 'asc' && sortField === field) {
+      direction = 'desc';
+    }
+    setSortDirection(direction);
+    setSortField(field);
+
+    dispatch({ type: 'SORT_NUMBERVALUES', payload: { field, direction } });
+  };
+
+  const handleSortClickByStringValues = (field) => {
+    let direction = 'asc';
+    if (sortDirection === 'asc' && sortField === field) {
+      direction = 'desc';
+    }
+    setSortDirection(direction);
+    setSortField(field);
+
+    dispatch({ type: 'SORT_STRINGVALUES', payload: { field, direction } });
+  };
   return (
     <div>
       <Helmet>
@@ -44,11 +94,35 @@ function ProductTable() {
       <div>
         <table className="table table-hover table-dark">
           <thead>
-            <tr>
-              <th scope="col">Cikkszám</th>
-              <th scope="col">Cikk megnevezése</th>
-              <th scope="col">Nettó ár (Ft)</th>
-              <th scope="col">Áfa (%)</th>
+            <tr className="sortable-header">
+              <th
+                scope="col"
+                onClick={() => handleSortClickByNumberValues('number')}
+              >
+                Cikkszám{' '}
+                {sortField === 'number' && sortDirection === 'asc' ? '▲' : '▼'}
+              </th>
+              <th
+                scope="col"
+                onClick={() => handleSortClickByStringValues('name')}
+              >
+                Cikk megnevezése{' '}
+                {sortField === 'name' && sortDirection === 'asc' ? '▲' : '▼'}
+              </th>
+              <th
+                scope="col"
+                onClick={() => handleSortClickByNumberValues('price')}
+              >
+                Nettó ár (Ft){' '}
+                {sortField === 'price' && sortDirection === 'asc' ? '▲' : '▼'}
+              </th>
+              <th
+                scope="col"
+                onClick={() => handleSortClickByNumberValues('vat')}
+              >
+                Áfa (%){' '}
+                {sortField === 'vat' && sortDirection === 'asc' ? '▲' : '▼'}
+              </th>
             </tr>
           </thead>
           <tbody>

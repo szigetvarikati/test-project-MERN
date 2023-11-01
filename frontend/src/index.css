@@ -50,10 +50,14 @@ tr {
 }
 
 .my-custom-button:hover {
-    background-color: #ffffff;
-    color: black;
+  background-color: #ffffff;
+  color: black;
 }
 
 .small-container {
   max-width: 600px;
+}
+
+.sortable-header {
+  cursor: pointer;
 }
