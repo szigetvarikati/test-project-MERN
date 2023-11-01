@@ -8,9 +8,12 @@ import userRouter from './routes/userRoutes.js';
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
-    console.log('connected to db');
+    console.log('Connected to MongoDB');
   })
   .catch((err) => {
     console.log(err.message);
@@ -31,5 +34,5 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`serve at http://localhost:${port}`);
+  console.log(`Serve at http://localhost:${port}`);
 });
