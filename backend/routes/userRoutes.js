@@ -1,15 +1,18 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
-import data from '../db/data.js';
 import User from '../db/models/userModel.js';
 
 const userRouter = express.Router();
 
 userRouter.get('/', async (req, res) => {
-  await User.deleteMany({});
-  const createdUsers = await User.insertMany(data.users);
-  res.send({ createdUsers });
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 userRouter.post(
