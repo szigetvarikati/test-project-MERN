@@ -13,28 +13,52 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     case 'SORT_NUMBERVALUES':
-      const sortedProductsByNumberValues = [...state.products].sort((a, b) => {
-        if (action.payload.direction === 'asc') {
-          return a[action.payload.field] - b[action.payload.field];
-        } else {
-          return b[action.payload.field] - a[action.payload.field];
+      const sortedProductsByNumberValues = [...state.searchResult].sort(
+        (a, b) => {
+          if (action.payload.direction === 'asc') {
+            return a[action.payload.field] - b[action.payload.field];
+          } else {
+            return b[action.payload.field] - a[action.payload.field];
+          }
         }
-      });
-      return { ...state, products: sortedProductsByNumberValues };
+      );
+      return {
+        ...state,
+        searchResult: sortedProductsByNumberValues,
+      };
     case 'SORT_STRINGVALUES':
       const { field, direction } = action.payload;
-      const sortedProducts = [...state.products].sort((a, b) => {
+      const sortedProducts = [...state.searchResult].sort((a, b) => {
         const aValue = a[field];
         const bValue = b[field];
         return direction === 'asc'
           ? aValue.localeCompare(bValue)
           : bValue.localeCompare(aValue);
       });
-      return { ...state, products: sortedProducts };
+      return { ...state, searchResult: sortedProducts };
     case 'REVERSE_SORT':
       return {
         ...state,
         products: [...state.products.reverse()],
+      };
+    case 'SEARCH':
+      const searchTerm = action.payload.toLowerCase();
+      const searchResult = state.products.filter((product) => {
+        return Object.values(product).some((value) => {
+          if (value && typeof value === 'string') {
+            return value.toLowerCase().includes(searchTerm);
+          }
+          if (value && typeof value === 'number') {
+            return value.toString().toLowerCase().includes(searchTerm);
+          }
+          return false;
+        });
+      });
+
+      return {
+        ...state,
+        searchResult,
+        invalidSearchMessage: searchResult.length === 0 ? 'Nincs találat.' : '',
       };
     default:
       return state;
@@ -42,14 +66,20 @@ const reducer = (state, action) => {
 };
 
 function ProductTable() {
-  const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
+  const [
+    { loading, error, products, searchResult, invalidSearchMessage },
+    dispatch,
+  ] = useReducer(logger(reducer), {
     products: [],
     loading: true,
     error: '',
+    searchResult: [],
+    invalidSearchMessage: '',
   });
 
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +115,12 @@ function ProductTable() {
 
     dispatch({ type: 'SORT_STRINGVALUES', payload: { field, direction } });
   };
+
+  const handleSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    dispatch({ type: 'SEARCH', payload: e.target.value });
+  };
+
   return (
     <div>
       <Helmet>
@@ -92,6 +128,17 @@ function ProductTable() {
       </Helmet>
       <h1>Termékeink</h1>
       <div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <input
+            type="text"
+            placeholder="Keresés..."
+            value={searchTerm}
+            onChange={handleSearchInputChange}
+          />
+          {invalidSearchMessage && (
+            <div className="error-message">{invalidSearchMessage}</div>
+          )}
+        </div>
         <table className="table table-hover table-dark">
           <thead>
             <tr className="sortable-header">
@@ -131,14 +178,16 @@ function ProductTable() {
             ) : error ? (
               <div>{error}</div>
             ) : (
-              products.map((product) => (
-                <tr className="product" key={product._id}>
-                  <th scope="row">{product.number}</th>
-                  <td>{product.name}</td>
-                  <td className="text-center">{product.price}</td>
-                  <td className="text-center">{product.vat}</td>
-                </tr>
-              ))
+              (searchResult.length > 0 ? searchResult : products).map(
+                (product) => (
+                  <tr className="product" key={product._id}>
+                    <th scope="row">{product.number}</th>
+                    <td>{product.name}</td>
+                    <td className="text-center">{product.price}</td>
+                    <td className="text-center">{product.vat}</td>
+                  </tr>
+                )
+              )
             )}
           </tbody>
         </table>
