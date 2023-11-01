@@ -9,7 +9,12 @@ const reducer = (state, action) => {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, products: action.payload, loading: false };
+      return {
+        ...state,
+        products: action.payload,
+        loading: false,
+        searchResult: action.payload,
+      };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     case 'SORT_NUMBERVALUES':
@@ -39,17 +44,23 @@ const reducer = (state, action) => {
     case 'REVERSE_SORT':
       return {
         ...state,
-        products: [...state.products.reverse()],
+        searchResult: [...state.searchResult.reverse()],
       };
     case 'SEARCH':
       const searchTerm = action.payload.toLowerCase();
       const searchResult = state.products.filter((product) => {
         return Object.values(product).some((value) => {
-          if (value && typeof value === 'string') {
-            return value.toLowerCase().includes(searchTerm);
+          if (
+            typeof value === 'string' &&
+            value.toLowerCase().includes(searchTerm)
+          ) {
+            return true;
           }
-          if (value && typeof value === 'number') {
-            return value.toString().toLowerCase().includes(searchTerm);
+          if (
+            typeof value === 'number' &&
+            value.toString().includes(searchTerm)
+          ) {
+            return true;
           }
           return false;
         });
@@ -118,7 +129,11 @@ function ProductTable() {
 
   const handleSearchInputChange = (e) => {
     setSearchTerm(e.target.value);
-    dispatch({ type: 'SEARCH', payload: e.target.value });
+    if (e.target.value.length === 0) {
+      dispatch({ type: 'SEARCH', payload: e.target.value });
+    } else {
+      dispatch({ type: 'SEARCH', payload: e.target.value });
+    }
   };
 
   return (
@@ -139,7 +154,7 @@ function ProductTable() {
             <div className="error-message">{invalidSearchMessage}</div>
           )}
         </div>
-        <table className="table table-hover table-dark">
+        <table className="table table-hover">
           <thead>
             <tr className="sortable-header">
               <th
@@ -180,11 +195,11 @@ function ProductTable() {
             ) : (
               (searchResult.length > 0 ? searchResult : products).map(
                 (product) => (
-                  <tr className="product" key={product._id}>
+                  <tr key={product._id}>
                     <th scope="row">{product.number}</th>
                     <td>{product.name}</td>
-                    <td className="text-center">{product.price}</td>
-                    <td className="text-center">{product.vat}</td>
+                    <td>{product.price}</td>
+                    <td>{product.vat}</td>
                   </tr>
                 )
               )

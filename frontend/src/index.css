@@ -12,8 +12,9 @@ body {
 .site-container {
   min-height: 100vh;
 }
+
 .table {
-  --bs-table-bg: rgb(106, 107, 124);
+  --bs-table-bg: rgb(141, 142, 154);
 }
 
 main {
@@ -60,4 +61,14 @@ tr {
 
 .sortable-header {
   cursor: pointer;
+}
+
+.matching-field::selection {
+  --bs-highlight-color: rgb(196, 235, 134);
+  --bs-highlight-bg: rgb(73, 70, 255);
+}
+
+::selection {
+  background-color: aqua;
+  color: blue;
 }
