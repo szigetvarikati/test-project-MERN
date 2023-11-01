@@ -10,5 +10,5 @@ const productSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const Product = mongoose.model('Product', productSchema);
+const Product = mongoose.model('adat', productSchema, 'adat');
 export default Product;

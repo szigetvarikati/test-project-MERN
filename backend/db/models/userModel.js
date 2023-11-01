@@ -9,5 +9,5 @@ const userSchema = new mongoose.Schema(
   { versionKey: false, timestamps: true }
 );
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('user', userSchema, 'user');
 export default User;
