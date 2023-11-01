@@ -72,3 +72,9 @@ tr {
   background-color: aqua;
   color: blue;
 }
+
+input {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}
