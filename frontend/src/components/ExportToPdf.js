@@ -30,7 +30,7 @@ function ExportToPdf({ labels, products, searchResult }) {
         disabled={exportData.length === 0}
         onClick={() => exportPDF(labels, exportData)}
       >
-        Export to PDF
+        Mentés PDF fájlba
       </Button>
     </div>
   );

@@ -4,18 +4,15 @@ import LoginScreen from './screens/LoginScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 
-
 function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
         <Navbar bg="dark" variant="dark">
-          <Container>
-            
-              <Navbar.Brand>
-                Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
-              </Navbar.Brand>
-          
+          <Container className='mx-auto'>
+            <Navbar.Brand  className="text-center mx-auto">
+              Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
+            </Navbar.Brand>
           </Container>
         </Navbar>
 
@@ -29,7 +26,7 @@ function App() {
           </Container>
         </main>
         <footer>
-          <div className="text-center">All rights reserved</div>
+          <div className="text-center">Minden jog fenntartva</div>
         </footer>
       </div>
     </BrowserRouter>
