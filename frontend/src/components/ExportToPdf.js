@@ -18,13 +18,11 @@ const exportPDF = (head, body) => {
     head: [head],
     body: body.map((row) => getKeysFromProduct(row).map((key) => row[key])),
   });
-
   document.save(filename);
 };
 
 function ExportToPdf({ labels, products, searchResult }) {
   const exportData = searchResult.length > 0 ? searchResult : products;
-
   return (
     <div>
       <Button

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, /*useLocation*/ } from 'react-router-dom';
-//import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 
@@ -10,9 +9,6 @@ export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  //  const location = useLocation();
-  //  const redirectInUrl = new URLSearchParams(location.search).get('redirect');
-  //  const redirect = redirectInUrl ? redirectInUrl : '/';
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -80,27 +76,12 @@ export default function LoginScreen() {
             />
             <Form.Label>Password</Form.Label>
           </Form.Group>
-          {/* <Link
-            to={`/signup?redirect=${redirect}`}
-            className="text-white-50 small mb-5 pb-lg-2"
-          >
-            Forgot password
-          </Link> */}
           {loginFailed && <div className="text-danger">{errorMessage}</div>}
           <div className="mb-3">
             <Button type="submit" className="my-custom-button">
               Login
             </Button>
           </div>
-          {/* <div className="mb-3 p-2">
-            Don't have an account?{' '}
-            <Link
-              to={`/signup?redirect=${redirect}`}
-              className="text-white-50 fw-bold"
-            >
-              Sign up
-            </Link>
-          </div> */}
         </Form>
       </Container>
     </Container>

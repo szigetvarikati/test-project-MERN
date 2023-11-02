@@ -11,4 +11,5 @@ const productSchema = new mongoose.Schema(
 );
 
 const Product = mongoose.model('adat', productSchema, 'adat');
+
 export default Product;
