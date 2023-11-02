@@ -32,13 +32,12 @@ export default function LoginScreen() {
         localStorage.setItem('username', response.username);
         navigate('/products');
       } else if (res.status === 401) {
-        console.log('401????');
-        setErrorMessage('Incorrect username/password!');
+        setErrorMessage('Helytelen felhasználónév vagy jelszó!');
         setLoginFailed(true);
         localStorage.removeItem('username');
       }
     } catch {
-      setErrorMessage('Oops! Something went wrong... Please try again!');
+      setErrorMessage('Hoppá! Valami baj van... Próbálja meg újra!');
       setLoginFailed(true);
       localStorage.removeItem('username');
     }
