@@ -3,7 +3,7 @@ import ProductScreen from './screens/ProductScreen';
 import LoginScreen from './screens/LoginScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import { LinkContainer } from 'react-router-bootstrap';
+
 
 function App() {
   return (
@@ -11,11 +11,11 @@ function App() {
       <div className="d-flex flex-column site-container">
         <Navbar bg="dark" variant="dark">
           <Container>
-            <LinkContainer to="/">
+            
               <Navbar.Brand>
                 Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
               </Navbar.Brand>
-            </LinkContainer>
+          
           </Container>
         </Navbar>
 
