@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ProductTable from './screens/ProductTable';
+import ProductScreen from './screens/ProductScreen';
 import LoginScreen from './screens/LoginScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
@@ -24,7 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<LoginScreen />} />
               <Route path="/login" element={<LoginScreen />} />
-              <Route path="/products" element={<ProductTable />} />
+              <Route path="/products" element={<ProductScreen />} />
             </Routes>
           </Container>
         </main>
