@@ -6,7 +6,6 @@ import bcrypt from 'bcryptjs';
 
 dotenv.config();
 
-// Ebben a változóban tároljuk a fájl elérési útvonalát
 const filepath = process.env.FILE_PATH;
 if (!filepath) {
   console.error('Missing FILE_PATH environment variable');
@@ -16,7 +15,6 @@ if (!filepath) {
 const filePathProducts = path.join(filepath, 'products.json');
 const filePathUsers = path.join(filepath, 'users.json');
 
-// A fs/promises modul readfile metódusának használatával olvasd be a JSON fájlt
 const readFile = async () => {
   try {
     const products = await fs.readFile(filePathProducts, 'utf8');
