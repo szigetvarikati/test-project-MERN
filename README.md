@@ -42,7 +42,11 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-![Imgur](https://imgur.com/dia3tSL.png)
+
+<p align="center">
+  <img src="https://imgur.com/2NrcaSk.png" alt="Kép leírása">
+  <img src="https://imgur.com/VcFIixz.png">
+</p>
 
 This MERN (MongoDB, Express, React, Node.js) project is designed with key features that include user authentication through a secure login system. The login functionality verifies user credentials directly from the database. Upon successful login, users are presented with a dynamic product table.
 
