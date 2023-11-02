@@ -69,8 +69,8 @@ tr {
 }
 
 ::selection {
-  background-color: aqua;
-  color: blue;
+  background-color: rgb(117, 128, 128);
+  color: rgb(0, 0, 0);
 }
 
 input {
