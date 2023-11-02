@@ -1,6 +1,5 @@
 import express from 'express';
 import Product from '../db/models/productModel.js';
-//import data from '../db/data.js';
 import User from '../db/models/userModel.js';
 
 const seedRouter = express.Router();
@@ -14,4 +13,5 @@ seedRouter.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 export default seedRouter;

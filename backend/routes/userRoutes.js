@@ -35,4 +35,5 @@ userRouter.post(
     res.status(401).send({ message: 'Username not found' });
   })
 );
+
 export default userRouter;
