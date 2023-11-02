@@ -138,6 +138,26 @@ function ProductTable() {
     }
   };
 
+  const getHighlightedText = (text, highlight, searchLabel) => {
+    const parts = text.toString().split(new RegExp(`(${highlight})`, 'gi'));
+    return parts.map((part, i) => (
+      <span
+        key={i}
+        style={
+          part.toLowerCase() === highlight.toLowerCase()
+            ? {
+                color: 'white',
+                backgroundColor: 'black',
+                fontWeight: 'bold',
+              }
+            : {}
+        }
+      >
+        {part}
+      </span>
+    ));
+  };
+
   return (
     <div>
       <Helmet>
@@ -203,10 +223,12 @@ function ProductTable() {
               (searchResult.length > 0 ? searchResult : products).map(
                 (product) => (
                   <tr key={product._id}>
-                    <th scope="row">{product.number}</th>
-                    <td>{product.name}</td>
-                    <td>{product.price}</td>
-                    <td>{product.vat}</td>
+                    <th scope="row">
+                      {getHighlightedText(product.number, searchTerm)}
+                    </th>
+                    <td>{getHighlightedText(product.name, searchTerm)}</td>
+                    <td>{getHighlightedText(product.price, searchTerm)}</td>
+                    <td>{getHighlightedText(product.vat, searchTerm)}</td>
                   </tr>
                 )
               )
