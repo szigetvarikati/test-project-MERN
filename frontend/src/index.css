@@ -48,6 +48,7 @@ tr {
   padding: 10px;
   width: 40%;
   font-size: large;
+  margin-top: 15px;
 }
 
 .my-custom-button:hover {
