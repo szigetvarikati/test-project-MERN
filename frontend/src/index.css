@@ -78,3 +78,7 @@ input {
   margin-bottom: 15px;
   margin-right: 15px;
 }
+
+.my-max-width {
+  max-width: 350px;
+}
