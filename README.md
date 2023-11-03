@@ -123,7 +123,7 @@ Follow this qquide to run and try the application.
 1. Add SingIn page to adding new user to database
 2. Add Logout feature to the application
 3. Complete the Login page with "forgotten password" feature
-4. Modify the appearance ot the exported Pdf document
+4. Modify the appearance of the exported Pdf document
 
 <!-- CONTACT -->
 ## Contact
