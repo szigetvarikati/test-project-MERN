@@ -34,6 +34,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#plans">Future plans</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -60,18 +61,13 @@ One of the standout features of this project is the ability to export the curren
 
 ### Built With
 
-<p>Frontend</p>
-
 * [![Javascript][Javascript]][Javascript-url]
 * [![React][React.js]][React-url]
 * [![Node.js][NodeJS]][NodeJS-url]
 * [![Express.js][Express.js]][Express.js-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-
-<p>Backend</p>
-
-* [![Javascript][Javascript]][Javascript-url]
 * [![MongoDB][MongoDB]][MongoDB-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![Css][Css.com]][Css-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -121,7 +117,13 @@ Follow this qquide to run and try the application.
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- PLANS -->
+## Future plans
+
+1. Add SingIn page to adding new user to database
+2. Add Logout feature to the application
+3. Complete the Login page with "forgotten password" feature
+4. Modify the appearance ot the exported Pdf document
 
 <!-- CONTACT -->
 ## Contact
@@ -156,3 +158,5 @@ Project Link: https://github.com/szigetvarikati/test-project-MERN
 [Express.js-url]: https://expressjs.com/
 [MongoDB]: https://img.shields.io/badge/MongoDB-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
 [MongoDB-url]: https://www.mongodb.com/
+[Css.com]: https://img.shields.io/badge/CSS-563D7C?style=for-the-badge&logo=css&logoColor=white
+[Css-url]: http://](https://www.w3.org/Style/CSS/Overview.en.html)https://www.w3.org/Style/CSS/Overview.en.html/
