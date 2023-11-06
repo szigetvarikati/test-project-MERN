@@ -78,7 +78,7 @@ One of the standout features of this project is the ability to export the curren
 [product-main]: images/screenshot.png
 ## Getting Started
 
-Follow this qquide to run and try the application.
+Follow this quide to run and try the application.
 
 ### Installation
 
