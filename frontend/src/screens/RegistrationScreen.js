@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 export default function RegistrationScreen() {
   const [loginFailed, setLoginFailed] = useState(false);
@@ -16,43 +17,44 @@ export default function RegistrationScreen() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoginFailed(false);
-    try {
-      const username = event.currentTarget.username.value;
-      const password = event.currentTarget.password.value;
-      const email = event.currentTarget.email.value;
-      const firstName = event.currentTarget.firstName.value;
-      const lastName = event.currentTarget.lastName.value;
-      const passwordConfirm = event.currentTarget.passwordConfirm.value;
 
-      const res = await fetch('/api/users/registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-        }),
-      });
-      if (res.status === 200) {
-        const response = await res.json();
-        localStorage.setItem('username', response.username);
-        navigate('/products'); /// hova iránítsam át, ha megvolt a post - itt kellene egy sikeres regisztráció üzenet/oldal vagy irányítson áát a login oldalra?
-      } else if (res.status === 401) {
-        setErrorMessage('Helytelen felhasználónév vagy jelszó!');
-        setLoginFailed(true);
-        localStorage.removeItem('username');
-      }
-    } catch {
-      setErrorMessage('Hoppá! Valami baj van... Próbálja meg újra!');
-      setLoginFailed(true);
-      localStorage.removeItem('username');
-    }
+    const username = event.currentTarget.username.value;
+    const password = event.currentTarget.password.value;
+    const email = event.currentTarget.email.value;
+    const firstName = event.currentTarget.firstName.value;
+    const lastName = event.currentTarget.lastName.value;
+
+    const registrationData = {
+      firstname: firstName,
+      lastname: lastName,
+      username: username,
+      email: email,
+      password: password,
+      isAdmin: false,
+    };
+
+    setLoginFailed(false);
+    fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registrationData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log('Error', error));
+    navigate('/login');
   };
+
+  function isEmailValid(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  function isPasswordConfirmationSuccessfull(password, passwordConfirm) {
+    return passwordConfirm === password;
+  }
 
   return (
     <Container className="py-5">
@@ -60,7 +62,7 @@ export default function RegistrationScreen() {
         <Helmet>
           <title>Registration</title>
         </Helmet>
-        <h2 className="fw-bold mb-2 text-uppercase">regisztráció</h2>
+        <h2 className="fw-bold mb-2 text-uppercase">Regisztráció</h2>
         <p class="text-white-50 mb-4">Kérem töltse ki az alábbi adatokat</p>
         <Form
           onSubmit={handleSubmit}
@@ -94,8 +96,12 @@ export default function RegistrationScreen() {
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
+              isInvalid={!isEmailValid(email)}
             />
-            <Form.Label>E-mail cím</Form.Label>
+            <Form.Control.Feedback type="invalid">
+              Kérem adjon meg egy érvényes e-mail címet!
+            </Form.Control.Feedback>
+            <Form.Label>E-mail cím *</Form.Label>
           </Form.Group>
           <Form.Group className="mb-3 my-max-width" controlId="username">
             <Form.Control
@@ -105,7 +111,7 @@ export default function RegistrationScreen() {
               required
               onChange={(e) => setUsername(e.target.value)}
             />
-            <Form.Label>Felhasználónév</Form.Label>
+            <Form.Label>Felhasználónév *</Form.Label>
           </Form.Group>
           <Form.Group className="mb-3 my-max-width" controlId="password">
             <Form.Control
@@ -115,27 +121,37 @@ export default function RegistrationScreen() {
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Form.Label>Jelszó</Form.Label>
+            <Form.Label>Jelszó *</Form.Label>
           </Form.Group>
           <Form.Group
-            className="mb-3 my-max-width" controlId="password-confirm"
+            className="mb-3 my-max-width"
+            controlId="password-confirm"
           >
             <Form.Control
               type="password"
               name="passwordConfirm"
               value={passwordConfirm}
               required
-              onChange={(e) => setPasswordConfirm(e.target.value)}
+              onChange={(e) => {
+                setPasswordConfirm(e.target.value);
+              }}
+              isInvalid={
+                !isPasswordConfirmationSuccessfull(password, passwordConfirm)
+              }
             />
-            <Form.Label>Jelszó megerősítése</Form.Label>
+            <Form.Control.Feedback type="invalid">
+              A jelszó nem egyezik!
+            </Form.Control.Feedback>
+            <Form.Label>Jelszó megerősítése *</Form.Label>
           </Form.Group>
           {loginFailed && <div className="text-danger">{errorMessage}</div>}
           <div className="mb-3">
             <Button type="submit" className="my-custom-button">
-              Belépés
+              Regisztráció
             </Button>
           </div>
         </Form>
+        <Link to="/login">Már regisztáltam, belépek</Link>
       </Container>
     </Container>
   );
