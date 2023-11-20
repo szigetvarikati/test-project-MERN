@@ -3,14 +3,15 @@ import ProductScreen from './screens/ProductScreen';
 import LoginScreen from './screens/LoginScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
+import RegistrationScreen from './screens/RegistrationScreen';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
         <Navbar bg="dark" variant="dark">
-          <Container className='mx-auto'>
-            <Navbar.Brand  className="text-center mx-auto">
+          <Container className="mx-auto">
+            <Navbar.Brand className="text-center mx-auto">
               Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
             </Navbar.Brand>
           </Container>
@@ -22,6 +23,7 @@ function App() {
               <Route path="/" element={<LoginScreen />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/products" element={<ProductScreen />} />
+              <Route path="/registration" element={<RegistrationScreen />} />
             </Routes>
           </Container>
         </main>
