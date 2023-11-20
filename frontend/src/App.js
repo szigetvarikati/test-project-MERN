@@ -28,7 +28,7 @@ function App() {
           </Container>
         </main>
         <footer>
-          <div className="text-center">Minden jog fenntartva</div>
+          <div className="text-center">© Minden jog fenntartva</div>
         </footer>
       </div>
     </BrowserRouter>
