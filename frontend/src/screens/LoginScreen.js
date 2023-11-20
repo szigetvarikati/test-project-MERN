@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 
@@ -50,7 +50,9 @@ export default function LoginScreen() {
           <title>Login</title>
         </Helmet>
         <h2 className="fw-bold mb-2 text-uppercase">Bejelentkezés</h2>
-        <p class="text-white-50 mb-4">Kérem adja meg a felhasználónevét és a jelszavát!</p>
+        <p class="text-white-50 mb-4">
+          Kérem adja meg a felhasználónevét és a jelszavát!
+        </p>
         <Form
           onSubmit={handleSubmit}
           className="row d-flex justify-content-center align-items-center"
@@ -63,7 +65,7 @@ export default function LoginScreen() {
               required
               onChange={(e) => setUsername(e.target.value)}
             />
-            <Form.Label>Felhasználónév</Form.Label>
+            <Form.Label>Felhasználónév *</Form.Label>
           </Form.Group>
           <Form.Group className="mb-3 my-max-width" controlId="password">
             <Form.Control
@@ -73,7 +75,7 @@ export default function LoginScreen() {
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Form.Label>Jelszó</Form.Label>
+            <Form.Label>Jelszó *</Form.Label>
           </Form.Group>
           {loginFailed && <div className="text-danger">{errorMessage}</div>}
           <div className="mb-3">
@@ -82,6 +84,7 @@ export default function LoginScreen() {
             </Button>
           </div>
         </Form>
+        <Link to="/registration">Még nincs hozzáférésem, regisztrálok!</Link>
       </Container>
     </Container>
   );
