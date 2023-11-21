@@ -1,12 +1,16 @@
 [
   {
-    "username": "TestUser",
-    "email": "test@mail.com",
-    "password": "asdasd"
+    "username": "Admin",
+    "email": "admin@test.com",
+    "password": "Admin123",
+    "isAdmin": true
   },
   {
-    "username": "Testuser2",
-    "email": "user2@mail.com",
-    "password": "qweqwe"
+    "firstname": "Test",
+    "lastname": "User",
+    "username": "Testuser",
+    "email": "user@test.com",
+    "password": "qweqwe",
+    "isAdmin": false
   }
 ]
