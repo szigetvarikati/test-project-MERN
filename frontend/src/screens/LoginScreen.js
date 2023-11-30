@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+//import { Store } from '../Store';
 
 export default function LoginScreen() {
   const [loginFailed, setLoginFailed] = useState(false);
@@ -9,6 +10,8 @@ export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  //const { state, dispatch: ctxDispatch } = useContext(Store);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,7 +30,12 @@ export default function LoginScreen() {
           password: password,
         }),
       });
-      if (res.status === 200) {
+      //ctxDispatch({ type: 'USER_LOGIN', payload: res });
+      console.log(res);
+      localStorage.setItem('userInfo', JSON.stringify(res.username));
+      navigate(redirect || '/');
+
+      /*  if (res.status === 200) {
         const response = await res.json();
         localStorage.setItem('username', response.username);
         localStorage.setItem('isAdmin', response.isAdmin);
@@ -36,7 +44,7 @@ export default function LoginScreen() {
         setErrorMessage('Helytelen felhasználónév vagy jelszó!');
         setLoginFailed(true);
         localStorage.removeItem('username');
-      }
+      } */
     } catch {
       setErrorMessage('Hoppá! Valami baj van... Próbálja meg újra!');
       setLoginFailed(true);
