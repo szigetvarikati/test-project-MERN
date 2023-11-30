@@ -5,10 +5,11 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import ExportToPdf from '../components/ExportToPdf';
 import productReducer from '../reducers/productReducer';
+import { Button } from 'react-bootstrap';
 
 const reducer = productReducer;
 
-function ProductTable() {
+function ProductTableAdmin() {
   const [
     { loading, error, products, searchResult, invalidSearchMessage },
     dispatch,
@@ -29,6 +30,7 @@ function ProductTable() {
     'Nettó ár (Ft)',
     'Áfa (%)',
     'Készlet (db)',
+    'Rendelhető',
   ];
 
   useEffect(() => {
@@ -97,9 +99,11 @@ function ProductTable() {
 
   return (
     <div>
-      <Helmet>
-        <title>Termékek</title>
-      </Helmet>
+      {
+        <Helmet>
+          <title>Admin</title>
+        </Helmet>
+      }
       <h1>Termékeink</h1>
       <div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -112,11 +116,11 @@ function ProductTable() {
           {invalidSearchMessage && (
             <div className="error-message">{invalidSearchMessage}</div>
           )}
-          {<ExportToPdf
+          <ExportToPdf
             labels={labels}
             products={products}
             searchResult={searchResult}
-          />}
+          />
         </div>
         <table className="table table-hover">
           <thead>
@@ -158,6 +162,16 @@ function ProductTable() {
                   ? '▲'
                   : '▼'}
               </th>
+              <th
+                scope="col"
+                onClick={() => handleSortClickByNumberValues('isAvailable')}
+              >
+                Rendelhető{' '}
+                {sortField === 'isAvailable' && sortDirection === 'asc'
+                  ? '▲'
+                  : '▼'}
+              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -176,6 +190,10 @@ function ProductTable() {
                     <td>{getHighlightedText(product.price, searchTerm)}</td>
                     <td>{getHighlightedText(product.vat, searchTerm)}</td>
                     <td>{getHighlightedText(product.inventory, searchTerm)}</td>
+                    <td>{product.isAvailable ? 'Igen' : 'Nem'}</td>
+                    <td>
+                      <Button variant="dark">Módosítás</Button>
+                    </td>
                   </tr>
                 )
               )
@@ -187,4 +205,4 @@ function ProductTable() {
   );
 }
 
-export default ProductTable;
+export default ProductTableAdmin;

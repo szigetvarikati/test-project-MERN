@@ -30,6 +30,7 @@ export default function LoginScreen() {
       if (res.status === 200) {
         const response = await res.json();
         localStorage.setItem('username', response.username);
+        localStorage.setItem('isAdmin', response.isAdmin);
         navigate('/products');
       } else if (res.status === 401) {
         setErrorMessage('Helytelen felhasználónév vagy jelszó!');
