@@ -4,7 +4,13 @@ import LoginScreen from './screens/LoginScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import RegistrationScreen from './screens/RegistrationScreen';
+import AdminScreen from './screens/AdminScreen';
+import ProductScreenAdmin from './screens/ProductScreenAdmin';
+import UserTable from './components/UserTable';
+import withRoleCheck from './components/withRoleCheck';
 
+const ProtectedProductTable = withRoleCheck(ProductScreen); // Wrap ProductTable
+const ProtectedAdminPage = withRoleCheck(AdminScreen); // Wrap AdminPage
 function App() {
   return (
     <BrowserRouter>
@@ -12,7 +18,7 @@ function App() {
         <Navbar bg="dark" variant="dark">
           <Container className="mx-auto">
             <Navbar.Brand className="text-center mx-auto">
-              Netlient Kft. - Teszt feladat - Készítette: Szigetvári Katalin
+              Pet Project - Készítette: Szigetvári Katalin
             </Navbar.Brand>
           </Container>
         </Navbar>
@@ -22,8 +28,11 @@ function App() {
             <Routes>
               <Route path="/" element={<LoginScreen />} />
               <Route path="/login" element={<LoginScreen />} />
-              <Route path="/products" element={<ProductScreen />} />
+              <Route path="/products" element={<ProtectedProductTable />} />
               <Route path="/registration" element={<RegistrationScreen />} />
+              <Route path="/admin" element={<ProtectedAdminPage />} />
+              <Route path="/admin/products" element={<ProductScreenAdmin />} />
+              <Route path="/admin/users" element={<UserTable />} />
             </Routes>
           </Container>
         </main>
