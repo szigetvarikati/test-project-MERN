@@ -4,78 +4,9 @@ import logger from 'use-reducer-logger';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import ExportToPdf from '../components/ExportToPdf';
+import productReducer from '../reducers/productReducer';
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
-      return {
-        ...state,
-        products: action.payload,
-        loading: false,
-        searchResult: action.payload,
-      };
-    case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
-    case 'SORT_NUMBERVALUES':
-      const sortedProductsByNumberValues = [...state.searchResult].sort(
-        (a, b) => {
-          if (action.payload.direction === 'asc') {
-            return a[action.payload.field] - b[action.payload.field];
-          } else {
-            return b[action.payload.field] - a[action.payload.field];
-          }
-        }
-      );
-      return {
-        ...state,
-        searchResult: sortedProductsByNumberValues,
-      };
-    case 'SORT_STRINGVALUES':
-      const { field, direction } = action.payload;
-      const sortedProducts = [...state.searchResult].sort((a, b) => {
-        const aValue = a[field];
-        const bValue = b[field];
-        return direction === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      });
-      return { ...state, searchResult: sortedProducts };
-    case 'REVERSE_SORT':
-      return {
-        ...state,
-        searchResult: [...state.searchResult.reverse()],
-      };
-    case 'SEARCH':
-      const searchTerm = action.payload.toLowerCase();
-      const searchResult = state.products.filter((product) => {
-        return Object.values(product).some((value) => {
-          if (
-            typeof value === 'string' &&
-            value.toLowerCase().includes(searchTerm)
-          ) {
-            return true;
-          }
-          if (
-            typeof value === 'number' &&
-            value.toString().includes(searchTerm)
-          ) {
-            return true;
-          }
-          return false;
-        });
-      });
-
-      return {
-        ...state,
-        searchResult,
-        invalidSearchMessage: searchResult.length === 0 ? 'Nincs találat.' : '',
-      };
-    default:
-      return state;
-  }
-};
+const reducer = productReducer;
 
 function ProductTable() {
   const [
@@ -92,7 +23,13 @@ function ProductTable() {
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const labels = ['Cikkszám', 'Cikk megnevezése', 'Nettó ár (Ft)', 'Áfa (%)'];
+  const labels = [
+    'Cikkszám',
+    'Cikk megnevezése',
+    'Nettó ár (Ft)',
+    'Áfa (%)',
+    'Készlet (db)',
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,7 +75,7 @@ function ProductTable() {
     }
   };
 
-  const getHighlightedText = (text, highlight, searchLabel) => {
+  const getHighlightedText = (text, highlight) => {
     const parts = text.toString().split(new RegExp(`(${highlight})`, 'gi'));
     return parts.map((part, i) => (
       <span
@@ -175,11 +112,11 @@ function ProductTable() {
           {invalidSearchMessage && (
             <div className="error-message">{invalidSearchMessage}</div>
           )}
-          <ExportToPdf
+          {<ExportToPdf
             labels={labels}
             products={products}
             searchResult={searchResult}
-          />
+          />}
         </div>
         <table className="table table-hover">
           <thead>
@@ -212,6 +149,15 @@ function ProductTable() {
                 Áfa (%){' '}
                 {sortField === 'vat' && sortDirection === 'asc' ? '▲' : '▼'}
               </th>
+              <th
+                scope="col"
+                onClick={() => handleSortClickByNumberValues('inventory')}
+              >
+                Készlet (db){' '}
+                {sortField === 'inventory' && sortDirection === 'asc'
+                  ? '▲'
+                  : '▼'}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -229,6 +175,7 @@ function ProductTable() {
                     <td>{getHighlightedText(product.name, searchTerm)}</td>
                     <td>{getHighlightedText(product.price, searchTerm)}</td>
                     <td>{getHighlightedText(product.vat, searchTerm)}</td>
+                    <td>{getHighlightedText(product.inventory, searchTerm)}</td>
                   </tr>
                 )
               )

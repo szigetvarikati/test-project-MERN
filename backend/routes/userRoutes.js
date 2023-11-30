@@ -35,4 +35,36 @@ userRouter.post(
     res.status(401).send({ message: 'Username not found' });
   })
 );
+
+userRouter.post(
+  '/',
+  expressAsyncHandler(async (req, res) => {
+    const existingUserEmail = await User.findOne({ email: req.body.email });
+    const existongUsername = await User.findOne({
+      username: req.body.username,
+    });
+    if (existingUserEmail) {
+      res.status(409).send({ message: 'Email already taken' });
+    } else if (existongUsername) {
+      res.status(409).send({ message: 'Username already taken' });
+    } else {
+      const newUser = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10),
+        isAdmin: false,
+      });
+      try {
+        await newUser.save();
+        res.send({ message: 'Successfully registration' });
+      } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: 'Registration failed' });
+      }
+    }
+  })
+);
+
 export default userRouter;

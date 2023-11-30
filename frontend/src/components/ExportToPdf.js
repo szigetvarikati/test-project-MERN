@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const getKeysFromProduct = (product) => {
-  return ['number', 'name', 'price', 'vat'];
+  return ['number', 'name', 'price', 'vat', 'inventory', 'isAvailable'];
 };
 
 const exportPDF = (head, body) => {
@@ -18,13 +18,12 @@ const exportPDF = (head, body) => {
     head: [head],
     body: body.map((row) => getKeysFromProduct(row).map((key) => row[key])),
   });
-
   document.save(filename);
 };
 
-function ExportToPdf({ labels, products, searchResult }) {
-  const exportData = searchResult.length > 0 ? searchResult : products;
-
+function ExportToPdf(/* { labels, products, searchResult } */) {
+ /*  const exportData =
+    searchResult && searchResult.length > 0 ? searchResult : products;
   return (
     <div>
       <Button
@@ -32,10 +31,10 @@ function ExportToPdf({ labels, products, searchResult }) {
         disabled={exportData.length === 0}
         onClick={() => exportPDF(labels, exportData)}
       >
-        Export to PDF
+        Mentés PDF fájlba
       </Button>
     </div>
-  );
+  ); */
 }
 
 export default ExportToPdf;
