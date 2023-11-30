@@ -23,7 +23,13 @@ function ProductTable() {
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const labels = ['Cikkszám', 'Cikk megnevezése', 'Nettó ár (Ft)', 'Áfa (%)'];
+  const labels = [
+    'Cikkszám',
+    'Cikk megnevezése',
+    'Nettó ár (Ft)',
+    'Áfa (%)',
+    'Készlet (db)',
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +75,7 @@ function ProductTable() {
     }
   };
 
-  const getHighlightedText = (text, highlight, searchLabel) => {
+  const getHighlightedText = (text, highlight) => {
     const parts = text.toString().split(new RegExp(`(${highlight})`, 'gi'));
     return parts.map((part, i) => (
       <span
@@ -106,11 +112,11 @@ function ProductTable() {
           {invalidSearchMessage && (
             <div className="error-message">{invalidSearchMessage}</div>
           )}
-          <ExportToPdf
+          {<ExportToPdf
             labels={labels}
             products={products}
             searchResult={searchResult}
-          />
+          />}
         </div>
         <table className="table table-hover">
           <thead>
@@ -143,6 +149,15 @@ function ProductTable() {
                 Áfa (%){' '}
                 {sortField === 'vat' && sortDirection === 'asc' ? '▲' : '▼'}
               </th>
+              <th
+                scope="col"
+                onClick={() => handleSortClickByNumberValues('inventory')}
+              >
+                Készlet (db){' '}
+                {sortField === 'inventory' && sortDirection === 'asc'
+                  ? '▲'
+                  : '▼'}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -160,6 +175,7 @@ function ProductTable() {
                     <td>{getHighlightedText(product.name, searchTerm)}</td>
                     <td>{getHighlightedText(product.price, searchTerm)}</td>
                     <td>{getHighlightedText(product.vat, searchTerm)}</td>
+                    <td>{getHighlightedText(product.inventory, searchTerm)}</td>
                   </tr>
                 )
               )
